@@ -1,4 +1,4 @@
-import { Database } from "bun:sqlite";
+import { Database, type SQLQueryBindings } from "bun:sqlite";
 import { mkdirSync } from "fs";
 import { join } from "path";
 
@@ -29,15 +29,15 @@ db.run("CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id)");
 db.run("CREATE INDEX IF NOT EXISTS idx_notes_public_slug ON notes(public_slug)");
 db.run("CREATE INDEX IF NOT EXISTS idx_notes_is_public ON notes(is_public)");
 
-export function queryAll<T>(sql: string, ...params: unknown[]): T[] {
+export function queryAll<T>(sql: string, ...params: SQLQueryBindings[]): T[] {
   return db.prepare(sql).all(...params) as T[];
 }
 
-export function queryGet<T>(sql: string, ...params: unknown[]): T | undefined {
+export function queryGet<T>(sql: string, ...params: SQLQueryBindings[]): T | undefined {
   return db.prepare(sql).get(...params) as T | undefined;
 }
 
-export function execute(sql: string, ...params: unknown[]) {
+export function execute(sql: string, ...params: SQLQueryBindings[]) {
   return db.prepare(sql).run(...params);
 }
 
