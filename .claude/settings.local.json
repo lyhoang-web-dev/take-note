@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(bun run lint:*)",
-      "Bash(bun run build:*)"
+      "Bash(bun run build:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(bun add:*)",
+      "Bash(python:*)",
+      "WebSearch",
+      "WebFetch(domain:www.better-auth.com)"
     ]
   }
 }

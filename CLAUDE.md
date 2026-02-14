@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Whenever working with third-party libraries, frameworks, or similar, you MUST look up official documentation to ensure working with up-to-date information.
+
+Use the DocsExplorer subagent for efficient documentation lookup.
+
 ## Project Overview
 
 A note-taking web app where authenticated users create, edit, delete, and publicly share rich-text notes. Notes use TipTap (JSON-based rich text) stored in SQLite. See `SPEC.MD` for the full technical specification.
