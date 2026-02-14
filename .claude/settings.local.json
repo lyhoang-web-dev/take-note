@@ -8,7 +8,8 @@
       "Bash(bun add:*)",
       "Bash(python:*)",
       "WebSearch",
-      "WebFetch(domain:www.better-auth.com)"
+      "WebFetch(*)",
+      "Bash(git diff:*)"
     ]
   }
 }

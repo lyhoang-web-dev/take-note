@@ -1,36 +1,48 @@
 import Link from "next/link";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { getNotesByUser } from "@/lib/notes";
 
-const dummyNotes = [
-  { id: "1", title: "Meeting notes", updatedAt: "2025-01-15", isPublic: false },
-  { id: "2", title: "Project ideas", updatedAt: "2025-01-14", isPublic: true },
-  { id: "3", title: "Shopping list", updatedAt: "2025-01-13", isPublic: false },
-];
+export default async function DashboardPage() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) redirect("/authenticate");
 
-export default function DashboardPage() {
+  const notes = getNotesByUser(session.user.id);
+
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">My Notes</h1>
-        <button className="rounded bg-foreground px-4 py-2 text-background">
-          Create note
-        </button>
+        <Link
+          href="/notes/new"
+          className="rounded bg-foreground px-4 py-2 text-background"
+        >
+          New Note
+        </Link>
       </div>
-      <ul className="flex flex-col gap-2">
-        {dummyNotes.map((note) => (
-          <li key={note.id}>
-            <Link
-              href={`/notes/${note.id}`}
-              className="flex items-center justify-between rounded border border-foreground/10 px-4 py-3 hover:bg-foreground/5"
-            >
-              <span className="font-medium">{note.title}</span>
-              <span className="flex gap-3 text-sm text-foreground/50">
-                {note.isPublic && <span>Public</span>}
-                <span>{note.updatedAt}</span>
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {notes.length === 0 ? (
+        <p className="text-foreground/50">
+          No notes yet. Create your first note!
+        </p>
+      ) : (
+        <ul className="flex flex-col gap-2">
+          {notes.map((note) => (
+            <li key={note.id}>
+              <Link
+                href={`/notes/${note.id}`}
+                className="flex items-center justify-between rounded border border-foreground/10 px-4 py-3 hover:bg-foreground/5"
+              >
+                <span className="font-medium">{note.title}</span>
+                <span className="flex gap-3 text-sm text-foreground/50">
+                  {note.isPublic && <span>Public</span>}
+                  <span>{note.updatedAt}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
